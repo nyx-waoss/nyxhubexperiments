@@ -49,6 +49,26 @@ window.addEventListener('load', () => {
 });
 
 /*=============================
+            Main Menu
+=============================*/
+function mainMenuExpandBtn(numBtn = "1") {
+    if ($('homepage').querySelector('.options').classList.contains('btnExpanded')) {
+        $('homepage').querySelector('.options').classList.remove('btnExpanded');
+        $('homepage').querySelector('.options').querySelectorAll('button').forEach(asdf => asdf.classList.remove('expand'));
+    } else {
+        $('homepage').querySelector('.options').classList.add('btnExpanded');
+        $('homepage').querySelector('.options').querySelectorAll('button').forEach(asdf => asdf.classList.remove('expand'));
+        if (numBtn == "1") {
+            $('homepage').querySelector('.options').querySelectorAll('button')[0].classList.add('expand');
+        } else if (numBtn == "2") {
+            $('homepage').querySelector('.options').querySelectorAll('button')[1].classList.add('expand');
+        } else if (numBtn == "3") {
+            $('homepage').querySelector('.options').querySelectorAll('button')[2].classList.add('expand');
+        }
+    }
+}
+
+/*=============================
             Slow Connections
 =============================*/
 function getConnectionInfo() {
@@ -288,9 +308,13 @@ video.addEventListener('canplaythrough', handleResume);
 
 function showOptions(options) {
     optionsDialog.querySelector('span').textContent = "Que vas a hacer ahora?";
-    optionsDialog.querySelectorAll('button').forEach(btn => btn.remove());
+    optionsDialog.querySelectorAll('button').forEach(btn => {
+        if (btn.classList.contains('protected')) return;
+        btn.remove();
+    });
 
     clearPreloadPool();
+    const bottomEl = optionsDialog.querySelector('.bottom');
 
     options.forEach(opt => {
         const btn = document.createElement('button');
@@ -302,7 +326,11 @@ function showOptions(options) {
             const nextScene = findScene(opt.callScene);
             playScene(nextScene);
         });
-        optionsDialog.appendChild(btn);
+        if (bottomEl) {
+            optionsDialog.insertBefore(btn, bottomEl);
+        } else {
+            optionsDialog.appendChild(btn);
+        }
 
         preloadScene(opt.callScene);
     });

@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/styleinjected.css">
     <link rel="stylesheet" href="/webs/proyectoreligioncole/styles.css">
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/4.0.0/uicons-solid-rounded/css/uicons-solid-rounded.css'>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/4.0.0/uicons-bold-rounded/css/uicons-bold-rounded.css'>
     <style>html{visibility:hidden}</style>
     <script src="/scriptinjected.js"></script>
 </head>
@@ -28,6 +29,11 @@
             <li>Ignacio Quesada Guzman</li>
             <li>Evan Murillo Calderon</li>
         </ul>
+        <!--<div class="options">
+            <button onclick="mainMenuExpandBtn('1')">A</button>
+            <button onclick="mainMenuExpandBtn('2')">B</button>
+            <button onclick="mainMenuExpandBtn('3')">C</button>
+        </div>-->
     </div>
     <main id="mainContent" class="hidden">
         <div class="video">
@@ -38,6 +44,9 @@
         </div>
         <div id="optionsDialog">
             <span>Que vas a hacer ahora?</span>
+            <div class="bottom">
+                <button class="protected" onclick="window.location.reload()"><i class="fi fi-br-rotate-right"></i> Reiniciar</button>
+            </div>
         </div>
         <div id="timelineEnd">
             <span class="icon">🎉</span>
