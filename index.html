@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NyxHub</title>
+    <link rel="stylesheet" href="/styleinjected.css">
+    <link rel="stylesheet" href="/styles.css">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/4.0.0/uicons-solid-rounded/css/uicons-solid-rounded.css'>
+</head>
+<body>
+    <header>
+        <span>NyxHub</span>
+    </header>
+    <main>
+        <div class="welcome"><h1>Bienvenido a NyxHub Experiments</h1><div class="line"></div></div>
+        <span>NyxHub Experiments (o su nombre corto, NyxHub) es una plataforma creada por Nyx_waoss/Hector NM, con la cual el mismo Nyx puede compartirle archivos, hostear paginas experimentales, y probar cosas que no son definitivas pero necesitan acceso a la internet.</span>
+        <span>Si usted esta aqui, es muy probable que Nyx le haya enviado algun programa, pagina, o archivo, y ahora usted necesita acceder a ellos ✨️ Sientase comodo de visitar la pagina.</span>
+        <section class="quickActons">
+            <div class="title"><span>Acciones Rapidas</span><div class="line"></div></div>
+            <div class="content">
+                <button onclick="home_quickActions_enterViaAccessCode()"><i class="fi fi-sr-password-alt"></i> Ingresar mediante codigo de acceso</button>
+                <button><i class="fi fi-sr-globe"></i> Archivos/Programas Publicos</button>
+            </div>
+        </section>
+        <section class="recientPages">
+            <div class="title"><span>Recientes</span><div class="line"></div></div>
+            <div class="content">
+                <button><i class="fi fi-sr-password-alt"></i> Ingresar mediante codigo de acceso</button>
+            </div>
+        </section>
+    </main>
+    <div id="textMsgBox" class="hidden">
+        <span>Ingrese un valor.</span>
+        <input type="text">
+        <div class="buttons">
+            <button class="cls">Cancelar</button>
+            <button class="acp">Confirmar</button>
+        </div>
+    </div>
+    <script src="/scriptinjected.js"></script>
+    <script src="/app.js"></script>
+</body>
+</html>

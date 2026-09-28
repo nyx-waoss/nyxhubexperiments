@@ -1,0 +1,189 @@
+/*nyxhub main*/
+body {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+header {
+    width: 100%;
+    height: 60px;
+
+    background: #BE0909;
+    background: linear-gradient(90deg, rgba(190, 9, 9, 1) 25%, rgba(217, 82, 82, 1) 69%, rgba(230, 60, 60, 1) 90%);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.18);
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 4px 14px;
+    box-sizing: border-box;
+
+    overflow-x: hidden;
+}
+header span {
+    font-size: 30px;
+    color: white;
+}
+
+main {
+    padding: 12px;
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    overflow-x: hidden;
+}
+main .welcome {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+main .welcome h1 {
+    margin: 0;
+    flex-shrink: 0;
+}
+main .welcome .line {
+    width: 100%;
+    height: 4px;
+    flex: 1;
+    flex-shrink: 1;
+
+    background: #ff6363;
+    background: linear-gradient(90deg, rgba(255, 99, 99, 1) 0%, rgba(143, 38, 255, 1) 50%, rgba(48, 146, 176, 1) 100%);
+}
+
+main section {
+    width: 100%;
+    height: auto;
+    max-height: 600px;
+
+    margin-top: 38px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+main section .title {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+main section .title span {
+    font-size: 20px;
+}
+main section .title .line {
+    width: 100%;
+    height: 4px;
+    flex: 1;
+    flex-shrink: 1;
+    background: #000000;
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0.1) 25%, rgba(0, 0, 0, 0) 100%);
+}
+
+main section .content {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    overflow-y: hidden;
+    overflow-x: auto;
+    margin-top: 8px;
+}
+main section .content button {
+    width: 200px;
+    height: auto;
+    aspect-ratio: 1/1;
+
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.02);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.034);
+    cursor: pointer;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+}
+main section .content button:hover {
+    border: 1px solid rgba(0, 0, 0, 0.14);
+    background-color: rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.06);
+}
+
+main section .content button i {
+    font-size: 60px;
+    width: 60px;
+    height: 60px;
+}
+
+#textMsgBox {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    width: 100%;
+    height: 100%;
+    max-width: 500px;
+    max-height: 300px;
+    z-index: 10;
+
+    border-radius: 22px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.3);
+    background-color: rgb(255, 255, 255);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+
+    padding: 22px 12px;
+    box-sizing: border-box;
+}
+#textMsgBox span {
+    font-size: 20px;
+    width: 100%;
+    text-align: left;
+}
+#textMsgBox input {
+    width: 80%;
+    height: 30px;
+
+    margin-top: 12px;
+
+    border: none;
+    border-radius: 8px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.04);
+}
+#textMsgBox .buttons {
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+
+    margin-top: auto;
+    margin-bottom: 12px;
+    padding-left: 100px;
+    box-sizing: border-box;
+}
+#textMsgBox .buttons button {
+    width: 100%;
+    height: 32px;
+
+    background-color: rgba(0, 0, 0, 0.02);
+    border: none;
+    border-radius: 999em;
+    cursor: pointer;
+}
+#textMsgBox .buttons button:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+}

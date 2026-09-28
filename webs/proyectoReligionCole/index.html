@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Interactivo</title>
+    <link rel="stylesheet" href="/styleinjected.css">
+    <link rel="stylesheet" href="/webs/proyectoReligionCole/styles.css">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/4.0.0/uicons-solid-rounded/css/uicons-solid-rounded.css'>
+    <style>html{visibility:hidden}</style>
+    <script src="/scriptinjected.js"></script>
+</head>
+<body>
+    <div id="loadingScr">
+        <img src="/webs/proyectoReligionCole/assets/load.gif" alt="">
+    </div>
+    <div id="preloadPool" class="hidden"></div>
+    <div id="floatingAnimatedStartBtn" class="hidden"></div>
+    <div id="homepage">
+        <img src="/webs/proyectoReligionCole/assets/cruz.jpg" alt="">
+        <h1>Proyecto de Religion</h1>
+        <h2>Video Interactivo</h2>
+        <button id="homepageStartBtn">Iniciar <i class="fi fi-sr-play"></i></button>
+        <span>Estudiantes:</span>
+        <ul>
+            <li>Héctor Núñez Meléndez</li>
+            <li>Isabella Ramirez Cortes</li>
+            <li>Ignacio Quesada Guzman</li>
+            <li>Evan Murillo Calderon</li>
+        </ul>
+    </div>
+    <main id="mainContent" class="hidden">
+        <div class="video">
+            <video autoplay>
+                <source>
+                Su navegador de internet no es compatible con videos.
+            </video>
+        </div>
+        <div id="optionsDialog">
+            <span>Que vas a hacer ahora?</span>
+        </div>
+        <div id="timelineEnd">
+            <span class="icon">🎉</span>
+            <span>Historia completada</span>
+            <span class="subtitle">Has completado la historia de Don Bosco</span>
+            <div class="buttons">
+                <button onclick="window.location.reload()">Salir</button>
+                <button onclick="window.location.reload()">Reintentar</button>
+            </div>
+        </div>
+    </main>
+    <script src="/webs/proyectoReligionCole/app.js"></script>
+</body>
+</html>
+<!--
+ü, é, á, í, ó, ú, ñ, Ñ, ¿, ¡
+-->

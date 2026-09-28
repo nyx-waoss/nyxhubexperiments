@@ -1,0 +1,7 @@
+main button {
+    width: 200px;
+    cursor: pointer;
+}
+main button:disabled {
+    cursor: not-allowed;
+}
