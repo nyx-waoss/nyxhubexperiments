@@ -10,17 +10,20 @@ async function showPromptBox(title = "Ingrese un valor.") {
         $('accessButton').disabled = true;
         msgBoxDialog.querySelector('span').textContent = title;
         msgBoxDialog.querySelector('input').classList.remove('hidden');
+        $('main').style.filter = "brightness(0.7)";
         msgBoxDialog.querySelector('.acp').onclick = () => {
             const enteredValue = msgBoxDialog.querySelector('input').value;
             msgBoxDialog.querySelector('input').value = "";
             msgBoxDialog.classList.add('hidden');
             $('accessButton').disabled = false;
+            $('main').style.filter = "brightness(1)";
             resolve({confirmed: true, value: enteredValue});
         };
         msgBoxDialog.querySelector('.cls').onclick = () => {
             msgBoxDialog.querySelector('input').value = "";
             msgBoxDialog.classList.add('hidden');
             $('accessButton').disabled = false;
+            $('main').style.filter = "brightness(1)";
             resolve({confirmed: false, value: ""});
         };
     });
@@ -32,14 +35,17 @@ async function showMsgBox(title = "Ingrese un valor.") {
         $('accessButton').disabled = true;
         msgBoxDialog.querySelector('span').textContent = title;
         msgBoxDialog.querySelector('input').classList.add('hidden');
+        $('main').style.filter = "brightness(0.7)";
         msgBoxDialog.querySelector('.acp').onclick = () => {
             msgBoxDialog.classList.add('hidden');
             $('accessButton').disabled = false;
+            $('main').style.filter = "brightness(1)";
             resolve({confirmed: true});
         };
         msgBoxDialog.querySelector('.cls').onclick = () => {
             msgBoxDialog.classList.add('hidden');
             $('accessButton').disabled = false;
+            $('main').style.filter = "brightness(1)";
             resolve({confirmed: false});
         };
     });

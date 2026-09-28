@@ -196,10 +196,11 @@ const storyTimeline = [
     {
         type: "step",
         scene: "frRezar_rezar",
-        videofile: "/webs/proyectoreligioncole/assets/video/pt3_option_2o2.webm",
-        videofilefallback: "/webs/proyectoreligioncole/assets/video/pt3_option_2o2.mp4",
+        videofile: "/webs/proyectoreligioncole/assets/video/pt3_option_2.webm",
+        videofilefallback: "/webs/proyectoreligioncole/assets/video/pt3_option_2.mp4",
         optionsOnFinish: [
-            { text:"1. Buscar Ayuda", callScene:"frRezar_buscarayuda" }
+            { text:"1. Buscar Ayuda", callScene:"frRezar_buscarayuda" },
+            { text:"2. Buscar en Libros", callScene:"frRezar_buscarenlibros" }
         ]
     },
     {
