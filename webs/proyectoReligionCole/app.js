@@ -123,8 +123,8 @@ const storyTimeline = [
     {
         type: "start",
         scene: "start",
-        videofile: "/webs/proyectoReligionCole/assets/video/intro.webm",
-        videofilefallback: "/webs/proyectoReligionCole/assets/video/intro.mp4",
+        videofile: "/webs/proyectoreligioncole/assets/video/intro.webm",
+        videofilefallback: "/webs/proyectoreligioncole/assets/video/intro.mp4",
         optionsOnFinish: [
             { text:"1. Regañarlos", callScene:"frIntro_reganiarlos" },
             { text:"2. Hablar con ellos", callScene:"frIntro_hablarconellos" },
@@ -134,8 +134,8 @@ const storyTimeline = [
     {
         type: "step",
         scene: "frIntro_reganiarlos",
-        videofile: "/webs/proyectoReligionCole/assets/video/pt1_option_1o2.webm",
-        videofilefallback: "/webs/proyectoReligionCole/assets/video/pt1_option_1o2.mp4",
+        videofile: "/webs/proyectoreligioncole/assets/video/pt1_option_1o2.webm",
+        videofilefallback: "/webs/proyectoreligioncole/assets/video/pt1_option_1o2.mp4",
         optionsOnFinish: [
             { text:"1. Comprenderlos", callScene:"frIntro_comprenderlos" }
         ]
@@ -143,8 +143,8 @@ const storyTimeline = [
     {
         type: "step",
         scene: "frIntro_hablarconellos",
-        videofile: "/webs/proyectoReligionCole/assets/video/option_2o1.webm",
-        videofilefallback: "/webs/proyectoReligionCole/assets/video/option_2o1.mp4",
+        videofile: "/webs/proyectoreligioncole/assets/video/option_2o1.webm",
+        videofilefallback: "/webs/proyectoreligioncole/assets/video/option_2o1.mp4",
         optionsOnFinish: [
             { text:"1. Regañarlos", callScene:"frIntro_reganiarlos" },
             { text:"2. Comprenderlos", callScene:"frIntro_comprenderlos" }
@@ -153,8 +153,8 @@ const storyTimeline = [
     {
         type: "step",
         scene: "frIntro_comprenderlos",
-        videofile: "/webs/proyectoReligionCole/assets/video/pt2.webm",
-        videofilefallback: "/webs/proyectoReligionCole/assets/video/pt2.mp4",
+        videofile: "/webs/proyectoreligioncole/assets/video/pt2.webm",
+        videofilefallback: "/webs/proyectoreligioncole/assets/video/pt2.mp4",
         optionsOnFinish: [
             { text:"1. Pedir Dinero", callScene:"frComprenderlos_pedirdinero" },
             { text:"2. Rendirse", callScene:"frComprenderlos_rendirse" },
@@ -164,8 +164,8 @@ const storyTimeline = [
     {
         type: "step",
         scene: "frComprenderlos_pedirdinero",
-        videofile: "/webs/proyectoReligionCole/assets/video/pt2_option_1.webm",
-        videofilefallback: "/webs/proyectoReligionCole/assets/video/pt2_option_1.mp4",
+        videofile: "/webs/proyectoreligioncole/assets/video/pt2_option_1.webm",
+        videofilefallback: "/webs/proyectoreligioncole/assets/video/pt2_option_1.mp4",
         optionsOnFinish: [
             { text:"1. Rendirse", callScene:"frComprenderlos_rendirse" },
             { text:"2. Rezar", callScene:"frComprenderlos_rezar" }
@@ -174,8 +174,8 @@ const storyTimeline = [
     {
         type: "step",
         scene: "frComprenderlos_rendirse",
-        videofile: "/webs/proyectoReligionCole/assets/video/pt2_option_2.webm",
-        videofilefallback: "/webs/proyectoReligionCole/assets/video/pt2_option_2.mp4",
+        videofile: "/webs/proyectoreligioncole/assets/video/pt2_option_2.webm",
+        videofilefallback: "/webs/proyectoreligioncole/assets/video/pt2_option_2.mp4",
         optionsOnFinish: [
             { text:"1. Pedir Dinero", callScene:"frComprenderlos_pedirdinero" },
             { text:"2. Rezar", callScene:"frComprenderlos_rezar" }
@@ -184,8 +184,8 @@ const storyTimeline = [
     {
         type: "step",
         scene: "frComprenderlos_rezar",
-        videofile: "/webs/proyectoReligionCole/assets/video/pt2_option_3.webm",
-        videofilefallback: "/webs/proyectoReligionCole/assets/video/pt2_option_3.mp4",
+        videofile: "/webs/proyectoreligioncole/assets/video/pt2_option_3.webm",
+        videofilefallback: "/webs/proyectoreligioncole/assets/video/pt2_option_3.mp4",
         optionsOnFinish: [
             { text:"1. Buscar Ayuda", callScene:"frRezar_buscarayuda" },
             { text:"2. Rezar", callScene:"frRezar_rezar" },
@@ -195,8 +195,8 @@ const storyTimeline = [
     {
         type: "step",
         scene: "frRezar_rezar",
-        videofile: "/webs/proyectoReligionCole/assets/video/pt3_option_2o2.webm",
-        videofilefallback: "/webs/proyectoReligionCole/assets/video/pt3_option_2o2.mp4",
+        videofile: "/webs/proyectoreligioncole/assets/video/pt3_option_2o2.webm",
+        videofilefallback: "/webs/proyectoreligioncole/assets/video/pt3_option_2o2.mp4",
         optionsOnFinish: [
             { text:"1. Buscar Ayuda", callScene:"frRezar_buscarayuda" }
         ]
@@ -204,8 +204,8 @@ const storyTimeline = [
     {
         type: "step",
         scene: "frRezar_buscarenlibros",
-        videofile: "/webs/proyectoReligionCole/assets/video/pt3_buscarenlibros2.webm",
-        videofilefallback: "/webs/proyectoReligionCole/assets/video/pt3_buscarenlibros2.mp4",
+        videofile: "/webs/proyectoreligioncole/assets/video/pt3_buscarenlibros2.webm",
+        videofilefallback: "/webs/proyectoreligioncole/assets/video/pt3_buscarenlibros2.mp4",
         optionsOnFinish: [
             { text:"1. Buscar Ayuda", callScene:"frRezar_buscarayuda" },
             { text:"2. Rezar", callScene:"frRezar_rezar" }
@@ -214,8 +214,8 @@ const storyTimeline = [
     {
         type: "end",
         scene: "frRezar_buscarayuda",
-        videofile: "/webs/proyectoReligionCole/assets/video/pt3_buscarayuda.webm",
-        videofilefallback: "/webs/proyectoReligionCole/assets/video/pt3_buscarayuda.mp4",
+        videofile: "/webs/proyectoreligioncole/assets/video/pt3_buscarayuda.webm",
+        videofilefallback: "/webs/proyectoreligioncole/assets/video/pt3_buscarayuda.mp4",
         optionsOnFinish: []
     },
 ];

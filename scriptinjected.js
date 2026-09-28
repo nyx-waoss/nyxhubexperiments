@@ -17,10 +17,12 @@ async function getAccessData() {
 }
 
 function findEntryByUrl(pathname, accessData) {
+    const path = pathname.toLowerCase();
     let match = null;
     for (const entry of accessData) {
-        if (pathname === entry.pageUrl || pathname.startsWith(entry.pageUrl + '/')) {
-            if (!match || entry.pageUrl.length > match.pageUrl.length) match = entry;
+        const base = entry.pageUrl.toLowerCase().replace(/\/+$/, '');
+        if (path === base || path.startsWith(base + '/')) {
+            if (!match || base.length > match.pageUrl.length) match = entry;
         }
     }
     return match;
