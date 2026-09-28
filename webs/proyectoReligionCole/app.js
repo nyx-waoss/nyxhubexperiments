@@ -134,10 +134,11 @@ const storyTimeline = [
     {
         type: "step",
         scene: "frIntro_reganiarlos",
-        videofile: "/webs/proyectoreligioncole/assets/video/pt1_option_1o2.webm",
-        videofilefallback: "/webs/proyectoreligioncole/assets/video/pt1_option_1o2.mp4",
+        videofile: "/webs/proyectoreligioncole/assets/video/pt1_opton_1o1.webm",
+        videofilefallback: "/webs/proyectoreligioncole/assets/video/pt1_opton_1o1.mp4",
         optionsOnFinish: [
-            { text:"1. Comprenderlos", callScene:"frIntro_comprenderlos" }
+            { text:"1. Hablar con ellos", callScene:"frIntro_hablarconellos" },
+            { text:"2. Comprenderlos", callScene:"frIntro_comprenderlos" }
         ]
     },
     {
