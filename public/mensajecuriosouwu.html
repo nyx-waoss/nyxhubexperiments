@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hola?</title>
     <style>
+        .hidden {
+            display: none !important;
+        }
         body {
             width: 100vw;
             height: 100vh;
@@ -40,13 +43,34 @@
         .text p {
             word-break: break-all;
         }
+
+        #videolinkpopup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 80;
+
+            background-color: white;
+
+            padding: 28px;
+            box-sizing: border-box;
+        }
     </style>
 </head>
 <body>
+    <div id="videolinkpopup"> <a href="https://youtu.be/oFX8Itp6LBc">https://youtu.be/oFX8Itp6LBc</a> </div>
     <h1>Hola?</h1>
     <p>Eres Isan? Espero que si. Que haces aqui? Que buscas?? Solo te dire que...</p>
     <div class="text">
         <p>MTZ4MTYuLi4zMgpBbnRlcyBkZSBjb250aW51YXIsIHF1ZSBoYWNlcyBhcXXDrT8gQ29tbyBsbGVnYXN0ZSBhY2E/PyBCdWVubywgYXF1w60gdGllbmVzIGxvIHF1ZSBidXNjYXMgKENyZW8pLgpQZXJvIGVuIHNlcmlvLCBjb21vIGxsZWdhc3RlIGhhc3RhIGFxdWk/IFNvbG8gdGUgZGlyZSBxdWUgbWUgZGEgbXVjaGEgcGVuYSBsbyBxdWUgZGljZSBlc3RvIEpBSkFKIHBlcm8gd2VubywgZXN0YXMgYSBwdW50byBkZSBsZWVybG8uCkVsIHRleHRvIGRlIGFiYWpvIG5lY2VzaXRhIHVuYSBjbGF2ZSBwYXJhIHNlciBkZWNpZnJhZG8sIHNlcmEgcXVlIGxvZ3JhcyBsZWVybG8/Pz8gRXNwZXJvIHF1ZSBzaSwgcG9ycXVlIGVzIGFsZ28gcXVlIHRlIHF1aWVybyBkZWNpciBkZXNkZSBoYWNlIG11Y2hvLiBQZXJvIHRhbWJpZW4gZXNwZXJvIHF1ZSBubywgcG9ycXVlIG1lIGRhIG11Y2hhIHBlbmFhYSBqYWphai4gQnVlbm8sIGFob3JhIHNpLCBsbyBpbXBvcnRhbnRlOgpUSEUgSU1BR0UgSVMgVEhFIEtFWS4KCk9jd2EgUWthY2l3d2EsIGxnZW8gZHMgYSB0c3lsciB5b2NvLCB4d3JwIHB6IGVldXV6IHFjdyBkZmd0Yy4gWSBsZyBidW0sIGxlIGJxeiwgcnJocXRhYSBob3MgcHdwZ2hmIGwgbXEgbmllZSBqLCB3YSBjc2NkaXYgZXQgdWZwLCBudiBncCBxY3cgaGJ2dGwgc3BiIGVpLi4gQ2YgbXBxcHl0di0gcXptdyBkbGZrbGR0bCB2bHNicyBhcnl0PyBOb3RjIHBzYnNzIG1panBua2MgcHNiZz8/PyBTZiB3ZmFvdXMgYnVtLSB0dWZyeiwgeW8gcGFhb3psYSwgdG0gb3AgYXN1Zm5pIHhvc3FsIHdlbGcgcHNiZywgcmZ3YXpua3MgbCBsaSB4b3VzIG56biBzYyBkaW9taWZyZXA6ICJMdnVjZSB0d2VzIHhmIGVlZWh6IGppYmEiLiBDeXB5bywgbGd6IGV6cyB0cGh6IHVhcW91LCBzcSBsZSBxdnBydXVobHMgeGdycnlwIHdvIG93bmUgYnNuIGRzeGFscHFsZHcgd3MgcXNjYnVsIGFwIGRpdGEgcWl5dHRoIHJwY3FqdGZweiB1c3FnLCBhZXpnIHdmcnosIGVlIGhheiA6MwpQd2ogZGpzZCwgbGh2ZmwgcWN3IGxmbWRlZSBsZ2VvIHZnIHB2aW96IHBoZmxyIGx3IGRmZ3RjbHYhIEhwIGF1ZyEhIEpibmx1LCBxYnMgYWV2cyBzaiBpeSBkZXl3eiBsd3lyYndlcCBsbHNjIGVhbG8gZWkgbHdnYmJsIGZ3am1iLg==</p>
     </div>
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        if (params.has('whatthefuck')) {
+            document.getElementById('videolinkpopup').classList.add('hidden');
+        }
+    </script>
 </body>
 </html>
