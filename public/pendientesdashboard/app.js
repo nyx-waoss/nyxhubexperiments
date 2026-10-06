@@ -49,9 +49,15 @@
   let state;
   try { state = JSON.parse(localStorage.getItem(KEY)); } catch (e) { state = null; }
   if (!state || !Array.isArray(state.tasks)) state = { name: 'Pepe', tasks: seed() };
-  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} };
+  if (!state.deleted) state.deleted = {};
+  const save = () => {
+    try { window.DashSync && DashSync.stamp(state); } catch (e) {}
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+    window.DashSync && DashSync.schedule();
+  };
 
   let filter = 'all';
+  let sfilter = 'today';
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const color = s => SUBJECTS[s] || '#8ab4ff';
 
@@ -70,6 +76,24 @@
     return `${h % 12 || 12}:${pad(m)} ${h < 12 ? 'a. m.' : 'p. m.'}`;
   };
   const isLate = t => !t.done && (t.date < plus(0) || (t.date === plus(0) && t.time && t.time < `${pad(new Date().getHours())}:${pad(new Date().getMinutes())}`));
+  /* Helper para filtrar las fechas de la sección Pronto */
+  const isSFilterMatch = (taskDate, sfilter) => {
+    const today = plus(0);
+    if (sfilter === 'today') {
+      return taskDate === today || (taskDate < today);
+    }
+    if (sfilter === 'tomorrow') {
+      return taskDate === plus(1);
+    }
+    if (sfilter === 'in2days') {
+      return taskDate === plus(2);
+    }
+    if (sfilter === 'nextweek') {
+      // Rango desde mañana (+1) hasta dentro de 7 días (+7)
+      return taskDate > today && taskDate <= plus(7);
+    }
+    return true;
+  };
 
   /* Saludo y reloj */
   function greet() {
@@ -194,23 +218,33 @@
   function render() {
     const today = plus(0);
     const all = [...state.tasks].sort(cmp);
-    const todays = all.filter(t => t.date === today || (t.date < today && !t.done));
-    const rest = all.filter(t => !todays.includes(t) && !t.done && (filter === 'all' || t.type === filter));
 
-    $('#today').innerHTML = todays.length ? todays.map((t, i) => taskHTML(t, i)).join('') : empty('fi-rr-sparkles', 'No tienes nada para hoy.<br>Disfruta el día.');
-    $('#upcoming').innerHTML = rest.length ? rest.map((t, i) => taskHTML(t, i)).join('') : empty('fi-rr-list-check', 'No hay pendientes en esta vista.');
+    const todays = all.filter(t => isSFilterMatch(t.date, sfilter) && (sfilter !== 'today' ? !t.done : true));
 
-    const done = todays.filter(t => t.done).length;
-    const pct = todays.length ? Math.round(done / todays.length * 100) : 0;
+    const rest = all.filter(t => !t.done && (filter === 'all' || t.type === filter));
+
+    $('#today').innerHTML = todays.length 
+      ? todays.map((t, i) => taskHTML(t, i)).join('') 
+      : empty('fi-rr-sparkles', 'No hay nada para esta fecha.');
+
+    $('#upcoming').innerHTML = rest.length 
+      ? rest.map((t, i) => taskHTML(t, i)).join('') 
+      : empty('fi-rr-list-check', 'No hay pendientes en esta vista.');
+
+    const todayTasks = all.filter(t => t.date === today || (t.date < today && !t.done));
+    const doneCount = todayTasks.filter(t => t.done).length;
+    const pct = todayTasks.length ? Math.round(doneCount / todayTasks.length * 100) : 0;
+
     $('#ring').style.strokeDashoffset = 264 - (264 * pct / 100);
     $('#pct').textContent = `${pct}%`;
-    $('#pct-sub').textContent = `${done} de ${todays.length}`;
+    $('#pct-sub').textContent = `${doneCount} de ${todayTasks.length}`;
 
-    const left = todays.length - done;
-    $('#sub').textContent = left ? `Tienes ${left} ${left === 1 ? 'pendiente' : 'pendientes'} para hoy.` : 'Estás al día con todo. ¡Buen trabajo!';
+    const left = todayTasks.length - doneCount;
+    $('#sub').textContent = left 
+      ? `Tienes ${left} ${left === 1 ? 'pendiente' : 'pendientes'} para hoy.` 
+      : 'Estás al día con todo. ¡Buen trabajo!';
   }
 
-  /* Interacción en listas */
   document.addEventListener('click', e => {
     const f = e.target.closest('#filters button');
     if (f) {
@@ -219,6 +253,16 @@
       render();
       return;
     }
+
+    const sf = e.target.closest('#soonFilters button');
+    if (sf) {
+      sfilter = sf.dataset.sf;
+      console.log(sfilter);
+      document.querySelectorAll('#soonFilters button').forEach(b => b.classList.toggle('on', b === sf));
+      render();
+      return;
+    }
+
     const row = e.target.closest('.task');
     if (!row) return;
     const t = state.tasks.find(x => x.id === row.dataset.id);
@@ -271,7 +315,7 @@
     const frame = origin
       ? [{ transform: 'none', opacity: 1 }, { transform: `translate(${origin.left - to.left}px,${origin.top - to.top}px) scale(${origin.width / to.width},${origin.height / to.height})`, opacity: 0 }]
       : [{ transform: 'none', opacity: 1 }, { transform: 'translateY(30px) scale(.94)', opacity: 0 }];
-    panel.animate(frame, { duration: 340, easing: 'ease-in' }).onfinish = () => ov.classList.remove('open');
+    panel.animate(frame, { duration: 340, easing: 'ease-in' }).onfinish = () => {panel.style.display = "none"; ov.classList.remove('open'); setTimeout(() => { panel.style.display = "block"; }, 240)};
   }
   ov.addEventListener('click', e => { if (e.target === ov) closePanel(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closePanel(); });
@@ -376,5 +420,38 @@
     render();
   }, 30000);
 
+  window.DashApp = {
+    getState: () => state,
+    toast,
+    setState(s) {
+      state = s;
+      try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+      nameEl.textContent = state.name;
+      render();
+    }
+  };
+
+  window.NioBridge = {
+    name: () => state.name,
+    tasks: () => state.tasks,
+    add(t) {
+      const task = { id: uid(), done: false, priority: 'Media', desc: '', time: '', ...t };
+      state.tasks.push(task); save(); render();
+      toast('fi-rr-check', 'Tarea guardada');
+      return task;
+    },
+    complete(id) {
+      const t = state.tasks.find(x => x.id === id);
+      if (t) { t.done = true; save(); render(); toast('fi-rr-check', 'Tarea completada'); }
+    },
+    remove(id) {
+      state.tasks = state.tasks.filter(x => x.id !== id); save(); render();
+    }
+  };
+
   render();
 })();
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/public/pendientesdashboard/sw.js');
+}

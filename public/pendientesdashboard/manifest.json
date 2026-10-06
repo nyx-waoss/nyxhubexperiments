@@ -1,0 +1,20 @@
+{
+  "name": "ToDo Nyx",
+  "short_name": "ToDo Nyx",
+  "start_url": "/public/pendientesdashboard/",
+  "display": "standalone",
+  "background_color": "#1b2038",
+  "theme_color": "#1b2038",
+  "icons": [
+    {
+      "src": "/public/pendientesdashboard/assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/public/pendientesdashboard/assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
