@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StalkOWO</title>
+    <script src="/scriptinjected.js"></script>
+    <link rel="stylesheet" href="/styleinjected.css">
+    <link rel="stylesheet" href="/public/stalkingowo/styles.css">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/4.0.0/uicons-solid-rounded/css/uicons-solid-rounded.css'>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/4.0.0/uicons-bold-rounded/css/uicons-bold-rounded.css'>
+</head>
+<body>
+    <header><img alt="" src="/public/stalkingowo/assets/logo.png"></header>
+    <main>
+        <div id="page_home" class="page hidden">
+            <h1>Bienvenido a StalkingOwO</h1>
+            <p>Necesitas ayuda para stalkear a alguien? Puedes usar este programa para eso :D Con este programa puedes conseguir datos <strong>publicos y basicos</strong> de personas.</p>
+            <button onclick="gotoPage('first')">Continuar <i class="fi fi-rr-angle-small-right"></i></button>
+        </div>
+        <div id="page_first" class="page hidden">
+            <h1>Aviso Importante y Términos de Uso</h1>
+            <p>
+                Por razones legales, éticas y de privacidad, es fundamental considerar los siguientes puntos antes de continuar:
+            </p>
+            <ul>
+                <li>
+                    <strong>Información únicamente pública:</strong> Este programa no accede, extrae ni vulnera información privada. Todo el contenido recopilado proviene de fuentes de acceso público en internet.
+                </li>
+                <li>
+                    <strong>Uso responsable:</strong> La herramienta está concebida con fines puramente informativos. Queda estrictamente prohibido su uso para acoso (harassment), ciberacoso, doxxing, intimidación o cualquier actividad ilícita.
+                </li>
+                <li>
+                    <strong>Responsabilidad del usuario:</strong> No nos hacemos responsables del uso indebido, la interpretación o las acciones que ejecutes utilizando los datos mostrados en esta plataforma.
+                </li>
+            </ul>
+            <p>
+                Al hacer clic en "Acepto", confirmas que entiendes estas condiciones y te comprometes a hacer un uso ético de la herramienta.
+            </p>
+            <label for="acceptEticCheckbox"><input type="checkbox" id="acceptEticCheckbox"> Acepto el uso ético de la herramienta.</label>
+            <button onclick="gotoPage('selectData')">Acepto <i class="fi fi-rr-angle-small-right"></i></button>
+        </div>
+    </main>
+
+    <script src="/public/stalkingowo/app.js"></script>
+</body>
+</html>
