@@ -182,7 +182,7 @@
   /* ============ Interfaz ============ */
   const btn = document.createElement('button');
   btn.id = 'syncBtn';
-  const nio = document.getElementById('invokeNioBtn');
+  const nio = document.querySelector('.top .create');
   nio ? nio.parentNode.insertBefore(btn, nio) : document.querySelector('.top').appendChild(btn);
   const menu = document.createElement('div');
   menu.id = 'syncMenu'; document.body.appendChild(menu);
