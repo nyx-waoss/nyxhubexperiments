@@ -112,7 +112,7 @@ h1{font-size:clamp(32px,5vw,54px);font-weight:600;letter-spacing:-.02em;line-hei
 	border-radius: 18px;
 	font-family: 'Outfit', sans-serif;
 	font-size: 16px;
-	background-color: rgba(255, 255, 255, 0.8);
+	background-color: rgba(255, 255, 255, 1);
 	color: black;
 }
 .card-title{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:500;color:var(--muted);margin-bottom:14px;flex-wrap:wrap}
@@ -121,8 +121,8 @@ h1{font-size:clamp(32px,5vw,54px);font-weight:600;letter-spacing:-.02em;line-hei
 
 /* Reloj */
 .time{display:flex;align-items:baseline;gap:8px;font-size:clamp(54px,7vw,84px);font-weight:200;letter-spacing:-.03em;line-height:1}
-.time small{font-size:.38em;font-weight:400;color:var(--muted);display:inline-block;min-width:1.2em; transition:transform 0.4s var(--ease), filter 0.3s ease;}
-.time small.tick{transform:translateY(-5px); filter: blur(2px); transition:transform 0.02s var(--ease), filter 0.02s ease;}
+.time small{font-size:.38em;font-weight:400;color:var(--muted);display:inline-block;min-width:1.2em; transition:transform 0.5s var(--ease), filter 0.3s ease;}
+.time small.tick{transform:scale(1.1); filter: blur(2px); transition:transform 0.02s var(--ease), filter 0.02s ease;}
 .clock .muted{margin-top:12px;font-size:17px;text-transform:capitalize}
 
 /* Clima */
@@ -267,7 +267,7 @@ h1{font-size:clamp(32px,5vw,54px);font-weight:600;letter-spacing:-.02em;line-hei
 @media (max-width:1000px){
   .clock,.weather{grid-column:span 6}
   .progress{grid-column:span 12}
-  .today,.upcoming{grid-column:span 12}
+  .today,.upcoming,.materialcheck,.quicknotes{grid-column:span 12}
   .progress .ring-wrap{margin:0 auto}
 }
 @media (max-width:620px){

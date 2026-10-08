@@ -3,7 +3,7 @@
   "short_name": "ToDo Nyx",
   "start_url": "/public/pendientesdashboard/",
   "display": "standalone",
-  "background_color": "#1b2038",
+  "background_color": "#2D5C6B",
   "theme_color": "#1b2038",
   "icons": [
     {

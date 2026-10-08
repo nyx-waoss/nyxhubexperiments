@@ -230,7 +230,11 @@
     const today = plus(0);
     const all = [...state.tasks].sort(cmp);
 
-    const todays = all.filter(t => isSFilterMatch(t.date, sfilter) && (sfilter !== 'today' ? !t.done : true));
+    const todays = all.filter(t => {
+      if (!isSFilterMatch(t.date, sfilter)) return false;
+      if (sfilter === 'today') return t.date === today || !t.done;
+      return !t.done;
+    });
 
     const rest = all.filter(t => !t.done && (filter === 'all' || t.type === filter));
 
