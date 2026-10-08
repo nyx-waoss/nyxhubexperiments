@@ -20,10 +20,11 @@
 
   /* ============ Detección de cambios locales ============ */
   const sigOf = t => JSON.stringify({ ...t, updatedAt: undefined });
-  let shadow = new Map(), shadowName = '';
+  let shadow = new Map(), shadowName = '', shadowNotes = '';
   function resetShadow(st) {
     shadow = new Map(st.tasks.map(t => [t.id, sigOf(t)]));
     shadowName = st.name;
+    shadowNotes = st.notes || '';
   }
   function stamp(st) {
     const now = Date.now(), seen = new Set();
@@ -34,11 +35,11 @@
       if (shadow.get(t.id) !== s) { t.updatedAt = now; shadow.set(t.id, s); delete st.deleted[t.id]; }
     }
     for (const id of [...shadow.keys()]) if (!seen.has(id)) { st.deleted[id] = now; shadow.delete(id); }
-    if (st.name !== shadowName) { st.nameAt = now; shadowName = st.name; }
+    if ((st.notes || '') !== shadowNotes) { st.notesAt = now; shadowNotes = st.notes || ''; }
   }
 
   /* ============ Mezcla (gana lo más reciente) ============ */
-  const canon = s => JSON.stringify({ n: s.name, a: s.nameAt || 0, d: s.deleted || {}, t: [...s.tasks].sort((x, y) => x.id < y.id ? -1 : 1) },
+  const canon = s => JSON.stringify({ n: s.name, a: s.nameAt || 0, o: s.notes || '', b: s.notesAt || 0, d: s.deleted || {}, t: [...s.tasks].sort((x, y) => x.id < y.id ? -1 : 1) },
     (k, v) => v && typeof v === 'object' && !Array.isArray(v) ? Object.fromEntries(Object.entries(v).sort(([a], [b]) => a < b ? -1 : 1)) : v);
   function merge(a, b) {
     const del = { ...((b && b.deleted) || {}) };
@@ -52,7 +53,13 @@
     const old = Date.now() - 60 * 864e5;
     for (const id of Object.keys(del)) if (del[id] < old) delete del[id];
     const useLocal = !b || (a.nameAt || 0) >= (b.nameAt || 0);
-    return { version: 2, name: useLocal ? a.name : b.name, nameAt: useLocal ? a.nameAt || 0 : b.nameAt, tasks: [...map.values()], deleted: del };
+    const notesLocal = !b || (a.notesAt || 0) >= (b.notesAt || 0);
+    return {
+      version: 2,
+      name: useLocal ? a.name : b.name, nameAt: useLocal ? a.nameAt || 0 : b.nameAt,
+      notes: notesLocal ? a.notes || '' : b.notes || '', notesAt: notesLocal ? a.notesAt || 0 : b.notesAt,
+      tasks: [...map.values()], deleted: del
+    };
   }
 
   /* ============ Google Identity y token ============ */
@@ -163,7 +170,7 @@
       const remoteChanged = !remote || canon(merged) !== canon(remote.data);
       if (localChanged) {
         app.setState(merged); resetShadow(merged);
-        if (remote) app.toast('fi-rr-refresh', 'Datos sincronizados');
+        /*if (remote) app.toast('fi-rr-refresh', 'Datos sincronizados');*/
       }
       if (remoteChanged) await push(merged, remote && remote.id);
       ls.set(K.last, Date.now()); setStatus('ok');

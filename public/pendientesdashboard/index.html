@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css">
+<link rel='stylesheet' href='https://cdn-uicons.flaticon.com/4.0.0/uicons-solid-rounded/css/uicons-solid-rounded.css'>
 <link rel="stylesheet" href="styles.css">
 <link rel="manifest" href="/public/pendientesdashboard/manifest.json">
 <meta name="theme-color" content="#1b2038">
@@ -28,77 +29,102 @@
 </div>
 
 <main class="app">
-  <header class="top">
-    <div>
-      <h1><span id="hello">Buenos días</span>, <span id="name" contenteditable="true" spellcheck="false" title="Toca para cambiar tu nombre">Pepe</span></h1>
-      <p id="sub" class="muted"></p>
-    </div>
-    <div class="create">
-      <button class="btn secondary" id="invokeNioBtn"><i class="fi fi-rr-circle-microphone"></i></button>
-      <button class="btn primary" id="add"><i class="fi fi-rr-plus"></i><span>Nueva tarea</span></button>
-    </div>
-  </header>
+	<header class="top">
+		<div>
+			<h1><span id="hello">Buenos días</span>, <span id="name" contenteditable="true" spellcheck="false" title="Toca para cambiar tu nombre">Pepe</span></h1>
+			<p id="sub" class="muted"></p>
+		</div>
+		<div class="create">
+			<button class="btn secondary" id="invokeNioBtn"><i class="fi fi-rr-circle-microphone"></i></button>
+			<button class="btn primary" id="add"><i class="fi fi-rr-plus"></i><span>Nueva tarea</span></button>
+		</div>
+	</header>
 
-  <section class="grid">
-    <article class="card clock" style="--i:0">
-      <div class="card-title"><i class="fi fi-rr-clock"></i>Hora</div>
-      <div class="time"><span id="hm">00:00</span><small id="sec">00</small></div>
-      <div class="muted" id="date"></div>
-    </article>
+	<section class="grid">
+		<article class="card clock" style="--i:0">
+			<div class="card-title"><i class="fi fi-rr-clock"></i>Hora</div>
+			<div class="time"><span id="hm">00:00</span><small id="sec">00</small></div>
+			<div class="muted" id="date"></div>
+		</article>
 
-    <article class="card weather" style="--i:1">
-      <div class="card-title"><i class="fi fi-rr-cloud-sun"></i>Clima</div>
-      <div class="w-row">
-        <i class="fi fi-rr-cloud-sun w-icon" id="w-icon"></i>
-        <div>
-          <div class="temp" id="w-temp">--°</div>
-          <div class="muted" id="w-desc">Clima</div>
-        </div>
-      </div>
-      <div class="w-extra muted" id="w-extra"></div>
-    </article>
+		<article class="card weather" style="--i:1">
+			<div class="card-title"><i class="fi fi-rr-cloud-sun"></i>Clima</div>
+			<div class="w-row">
+				<i class="fi fi-rr-cloud-sun w-icon" id="w-icon"></i>
+				<div>
+					<div class="temp" id="w-temp">--°</div>
+					<div class="muted" id="w-desc">Clima</div>
+				</div>
+			</div>
+			<div class="w-extra muted" id="w-extra"></div>
+		</article>
 
-    <article class="card progress" style="--i:2">
-      <div class="card-title"><i class="fi fi-rr-chart-pie-alt"></i>Progreso de hoy</div>
-      <div class="ring-wrap">
-        <svg viewBox="0 0 100 100" class="ring">
-          <circle cx="50" cy="50" r="42" class="ring-bg"/>
-          <circle cx="50" cy="50" r="42" class="ring-fg" id="ring"/>
-        </svg>
-        <div class="ring-text"><b id="pct">0%</b><span class="muted" id="pct-sub">0 de 0</span></div>
-      </div>
-    </article>
+		<article class="card progress" style="--i:2">
+			<div class="card-title"><i class="fi fi-rr-chart-pie-alt"></i>Progreso de hoy</div>
+			<div class="ring-wrap">
+				<svg viewBox="0 0 100 100" class="ring">
+					<circle cx="50" cy="50" r="42" class="ring-bg"/>
+					<circle cx="50" cy="50" r="42" class="ring-fg" id="ring"/>
+				</svg>
+				<div class="ring-text"><b id="pct">0%</b><span class="muted" id="pct-sub">0 de 0</span></div>
+			</div>
+		</article>
 
-    <article class="card list today" style="--i:3">
-      <div class="card-title"><i class="fi fi-rr-calendar-day"></i>Pronto
-        <div class="seg" id="soonFilters">
-          <button data-sf="today" class="on">Hoy</button>
-          <button data-sf="tomorrow">Mañana</button>
-          <button data-sf="in2days">En 2 Días</button>
-          <button data-sf="nextweek">Proxima Semana</button>
-        </div>
-      </div>
-      <div class="tasks" id="today"></div>
-    </article>
+		<article class="card list today" style="--i:3">
+			<div class="card-title"><i class="fi fi-rr-calendar-day"></i>Pronto
+				<div class="seg" id="soonFilters">
+					<button data-sf="today" class="on">Hoy</button>
+					<button data-sf="tomorrow">Mañana</button>
+					<button data-sf="in2days">En 2 Días</button>
+					<button data-sf="nextweek">Proxima Semana</button>
+				</div>
+			</div>
+			<div class="tasks" id="today"></div>
+		</article>
 
-    <article class="card list upcoming" style="--i:4">
-      <div class="card-title">
-        <i class="fi fi-rr-list-check"></i>Pendientes
-        <div class="seg" id="filters">
-          <button data-f="all" class="on">Todas</button>
-          <button data-f="Tarea">Tareas</button>
-          <button data-f="Examen">Exámenes</button>
-          <button data-f="Proyecto">Proyectos</button>
-          <button data-f="Recordatorio">Avisos</button>
-        </div>
-      </div>
-      <div class="tasks" id="upcoming"></div>
-    </article>
-  </section>
+		<article class="card list upcoming" style="--i:4">
+			<div class="card-title">
+				<i class="fi fi-rr-list-check"></i>Pendientes
+				<div class="seg" id="filters">
+					<button data-f="all" class="on">Todas</button>
+					<button data-f="Tarea">Tareas</button>
+					<button data-f="Examen">Exámenes</button>
+					<button data-f="Proyecto">Proyectos</button>
+					<button data-f="Recordatorio">Avisos</button>
+				</div>
+			</div>
+			<div class="tasks" id="upcoming"></div>
+		</article>
+
+		<article class="card list materialcheck" style="--i:5">
+			<div class="card-title"><i class="fi fi-rr-box"></i>Verificar Materiales</div>
+			<div class="row">
+				<button data-mat="dg">
+					<div class="icons">
+						<i class="fi fi-sr-pencil-paintbrush"></i>
+						<i class="fi fi-sr-palette"></i>
+					</div>
+					Disenio Grafico
+				</button>
+				<button data-mat="dme">
+					<div class="icons">
+						<i class="fi fi-sr-house-chimney"></i>
+						<i class="fi fi-sr-ruler-triangle"></i>
+					</div>
+					DME
+				</button>
+			</div>
+		</article>
+
+		<article class="card list quicknotes" style="--i:6">
+			<div class="card-title"><i class="fi fi-rr-edit"></i>Notas</div>
+			<textarea id="quickNotes"></textarea>
+		</article>
+	</section>
 </main>
 
 <div class="overlay" id="overlay">
-  <div class="panel" id="panel"></div>
+	<div class="panel" id="panel"></div>
 </div>
 <div class="toasts" id="toasts"></div>
 

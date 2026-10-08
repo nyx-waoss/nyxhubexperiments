@@ -50,6 +50,7 @@
   try { state = JSON.parse(localStorage.getItem(KEY)); } catch (e) { state = null; }
   if (!state || !Array.isArray(state.tasks)) state = { name: 'Pepe', tasks: seed() };
   if (!state.deleted) state.deleted = {};
+  if (typeof state.notes !== 'string') state.notes = '';
   const save = () => {
     try { window.DashSync && DashSync.stamp(state); } catch (e) {}
     try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
@@ -108,6 +109,16 @@
     nameEl.textContent = state.name;
     save();
   });
+  
+  const notesEl = $('#quickNotes');
+  notesEl.value = state.notes;
+  let notesT;
+  const saveNotes = () => {
+    clearTimeout(notesT);
+    if (state.notes !== notesEl.value) { state.notes = notesEl.value; save(); }
+  };
+  notesEl.addEventListener('input', () => { clearTimeout(notesT); notesT = setTimeout(saveNotes, 600); });
+  notesEl.addEventListener('blur', saveNotes);
 
   function tick() {
     const n = new Date();
@@ -420,6 +431,52 @@
     render();
   }, 30000);
 
+    /* Verificar materiales (temporal: solo en memoria, no se guarda ni se sincroniza) */
+  const MATERIALS = {
+    dg: { title: 'Diseño Gráfico', color: SUBJECTS['Graphic Design'], items: 
+      ['Paleta de colores', 'Pinceles', 'Témperas',
+        'Brochas', 'Hojas', 'Caja de arte', 'Gabacha',
+      ] },
+    dme: { title: 'DME', color: SUBJECTS['DME'], items: 
+      ['Antología', 'Caja de arte', 'Reglas',
+        'Escuadras', 'Compás', 'Trapito', 'Alcohol',
+        'Escalimetro', 'Gabacha', 
+      ] },
+  };
+  const matDone = { dg: new Set(), dme: new Set() };
+
+  document.querySelectorAll('[data-mat]').forEach(b => b.addEventListener('click', () => openMaterials(b.dataset.mat, b)));
+
+  function openMaterials(key, from) {
+    const m = MATERIALS[key], done = matDone[key];
+    openPanel(`
+      <button class="x" aria-label="Cerrar"><i class="fi fi-rr-cross-small"></i></button>
+      <div class="d-subject"><i class="fi fi-rr-box"></i>Verificar materiales</div>
+      <div class="d-title">${m.title}</div>
+      <div class="mat-count muted" id="mat-count"></div>
+      <div class="tasks mat-list">${m.items.map((it, i) => `
+        <div class="task mat ${done.has(i) ? 'done' : ''}" data-i="${i}" style="--c:${m.color};--n:${i}">
+          <button class="check" aria-label="Marcar"><i class="fi fi-rr-check"></i></button>
+          <div class="t-title">${esc(it)}</div>
+        </div>`).join('')}
+      </div>
+      <div class="d-actions"><button class="btn ghost" id="mat-reset"><i class="fi fi-rr-refresh"></i><span>Desmarcar todo</span></button></div>`, from, m.color);
+
+    const list = panel.querySelector('.mat-list'), count = $('#mat-count');
+    const update = () => { count.textContent = done.size === m.items.length ? '¡Llevas todo!' : `${done.size} de ${m.items.length} listos`; };
+    update();
+    list.addEventListener('click', e => {
+      const row = e.target.closest('.mat');
+      if (!row) return;
+      const i = Number(row.dataset.i);
+      if (done.has(i)) done.delete(i); else done.add(i);
+      row.classList.toggle('done', done.has(i));
+      update();
+      if (done.size === m.items.length) confetti(row.querySelector('.check'));
+    });
+    $('#mat-reset').onclick = () => { done.clear(); list.querySelectorAll('.mat').forEach(r => r.classList.remove('done')); update(); };
+  }
+
   window.DashApp = {
     getState: () => state,
     toast,
@@ -427,6 +484,7 @@
       state = s;
       try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
       nameEl.textContent = state.name;
+      if (document.activeElement !== notesEl) notesEl.value = state.notes || '';
       render();
     }
   };
