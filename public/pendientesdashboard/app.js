@@ -51,10 +51,14 @@
   if (!state || !Array.isArray(state.tasks)) state = { name: 'Pepe', tasks: seed() };
   if (!state.deleted) state.deleted = {};
   if (typeof state.notes !== 'string') state.notes = '';
+  if (!state.intel) state.intel = { dismissed: {}, accepted: {}, snoozed: {}, courseMap: {} };
+  if (!state.customSubjects) state.customSubjects = {};
+  Object.assign(SUBJECTS, state.customSubjects);
   const save = () => {
     try { window.DashSync && DashSync.stamp(state); } catch (e) {}
     try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
     window.DashSync && DashSync.schedule();
+    document.dispatchEvent(new CustomEvent('dash:changed'));
   };
 
   let filter = 'all';
@@ -364,7 +368,7 @@
 
   /* Formulario nueva tarea */
   const opts = o => Object.keys(o).map(k => `<option>${k}</option>`).join('');
-  $('#add').addEventListener('click', () => {
+  function openNewTask(pre = {}, from) {
     openPanel(`
       <button class="x" aria-label="Cerrar"><i class="fi fi-rr-cross-small"></i></button>
       <div class="f-title">Nueva tarea</div>
@@ -377,7 +381,17 @@
       </div>
       <div class="field"><label for="f-prio">Prioridad</label><select id="f-prio"><option>Media</option><option>Alta</option><option>Baja</option></select></div>
       <div class="field"><label for="f-desc">Descripción</label><textarea id="f-desc" placeholder="Ingrese detalles, páginas, links, o lo que necesite recordar"></textarea></div>
-      <div class="d-actions"><button class="btn primary" id="f-save"><i class="fi fi-rr-check"></i><span>Guardar tarea</span></button></div>`, $('#add'));
+      <div class="d-actions"><button class="btn primary" id="f-save"><i class="fi fi-rr-check"></i><span>Guardar tarea</span></button></div>`, from || $('#add'));
+
+    // Valores precargados (vienen de una sugerencia)
+    if (pre.title)    $('#f-title').value   = pre.title;
+    if (pre.subject)  $('#f-subject').value = pre.subject;
+    if (pre.type)     $('#f-type').value    = pre.type;
+    if (pre.date)     $('#f-date').value    = pre.date;
+    if (pre.time !== undefined) $('#f-time').value = pre.time;
+    if (pre.priority) $('#f-prio').value    = pre.priority;
+    if (pre.desc)     $('#f-desc').value    = pre.desc;
+
     setTimeout(() => $('#f-title').focus(), 500);
     $('#f-save').onclick = () => {
       const title = $('#f-title').value.trim();
@@ -386,15 +400,19 @@
         $('#f-title').focus();
         return;
       }
-      state.tasks.push({
+      const task = {
         id: uid(), title,
         subject: $('#f-subject').value, type: $('#f-type').value,
         date: $('#f-date').value || plus(0), time: $('#f-time').value,
         priority: $('#f-prio').value, desc: $('#f-desc').value.trim(), done: false
-      });
+      };
+      if (pre.src) task.src = pre.src;
+      if (pre.url) task.srcUrl = pre.url;
+      state.tasks.push(task);
       save(); closePanel(); setTimeout(render, 300); toast('fi-rr-check', 'Tarea guardada');
     };
-  });
+  }
+  $('#add').addEventListener('click', () => openNewTask());
 
   /* Toasts y confeti */
   function toast(icon, text) {
@@ -484,12 +502,29 @@
   window.DashApp = {
     getState: () => state,
     toast,
+    save,
+    SUBJECTS, TYPES,
+    plus, pad, dstr, cmp, fmtDate, fmtTime,
+    openNewTask,
+    updateTask(id, patch) {
+      const t = state.tasks.find(x => x.id === id);
+      if (t) { Object.assign(t, patch); save(); render(); }
+    },
+    addSubject(name, c) {
+      state.customSubjects[name] = c;
+      SUBJECTS[name] = c;
+      save();
+    },
     setState(s) {
       state = s;
+      if (!state.intel) state.intel = { dismissed: {}, accepted: {}, snoozed: {}, courseMap: {} };
+      if (!state.customSubjects) state.customSubjects = {};
+      Object.assign(SUBJECTS, state.customSubjects);
       try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
       nameEl.textContent = state.name;
       if (document.activeElement !== notesEl) notesEl.value = state.notes || '';
       render();
+      document.dispatchEvent(new CustomEvent('dash:changed'));
     }
   };
 

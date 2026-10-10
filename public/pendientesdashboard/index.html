@@ -42,6 +42,16 @@
 	</header>
 
 	<section class="grid">
+		<article class="card hero" id="hero" data-mood="calm" style="--i:0">
+			<div class="hero-orb"><span></span><span></span><span></span></div>
+			<div class="hero-body">
+				<div class="hero-kicker" id="heroKicker"></div>
+				<h2 id="heroTitle"></h2>
+				<p id="heroText"></p>
+				<div class="hero-chips" id="heroChips"></div>
+			</div>
+		</article>
+
 		<article class="card clock" style="--i:0">
 			<div class="card-title"><i class="fi fi-rr-clock"></i>Hora</div>
 			<div class="time"><span id="hm">00:00</span><small id="sec">00</small></div>
@@ -121,6 +131,18 @@
 			<div class="card-title"><i class="fi fi-rr-edit"></i>Notas</div>
 			<textarea id="quickNotes"></textarea>
 		</article>
+
+		<article class="card list suggest" id="suggestCard" style="--i:7">
+			<div class="card-title">
+				<i class="fi fi-rr-bulb"></i>Sugerencias <span class="badge" id="sgCount"></span>
+				<div class="seg">
+				<button id="sgRefresh" title="Revisar ahora"><i class="fi fi-rr-refresh"></i></button>
+				</div>
+			</div>
+			<div class="sg-status muted" id="sgStatus"></div>
+			<div class="tasks" id="sgList"></div>
+			<button class="btn ghost" id="sgConnect"><i class="fi fi-rr-link"></i><span>Conectar Classroom y Calendar</span></button>
+		</article>
 	</section>
 </main>
 
@@ -132,6 +154,17 @@
 <script src="assistant.js"></script>
 <script src="app.js"></script>
 <script src="sync.js"></script>
+<script src="intel/config.js"></script>
+<script src="intel/store.js"></script>
+<script src="intel/text.js"></script>
+<script src="intel/classify.js"></script>
+<script src="intel/google.js"></script>
+<script src="intel/collector.js"></script>
+<script src="intel/analyzer.js"></script>
+<script src="intel/greeter.js"></script>
+<script src="intel/mock.js"></script>
+<script src="intel/ui.js"></script>
+<script src="intel/intel.js"></script>
 <!--<script src="https://cdn.jsdelivr.net/npm/eruda"></script>
 <script>eruda.init();</script>-->
 </body>

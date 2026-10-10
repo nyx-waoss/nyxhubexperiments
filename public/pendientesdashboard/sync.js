@@ -39,7 +39,9 @@
   }
 
   /* ============ Mezcla (gana lo más reciente) ============ */
-  const canon = s => JSON.stringify({ n: s.name, a: s.nameAt || 0, o: s.notes || '', b: s.notesAt || 0, d: s.deleted || {}, t: [...s.tasks].sort((x, y) => x.id < y.id ? -1 : 1) },
+  const canon = s => JSON.stringify({ n: s.name, a: s.nameAt || 0, o: s.notes || '', b: s.notesAt || 0,
+    d: s.deleted || {}, i: s.intel || {}, c: s.customSubjects || {},
+    t: [...s.tasks].sort((x, y) => x.id < y.id ? -1 : 1) },
     (k, v) => v && typeof v === 'object' && !Array.isArray(v) ? Object.fromEntries(Object.entries(v).sort(([a], [b]) => a < b ? -1 : 1)) : v);
   function merge(a, b) {
     const del = { ...((b && b.deleted) || {}) };
@@ -58,9 +60,23 @@
       version: 2,
       name: useLocal ? a.name : b.name, nameAt: useLocal ? a.nameAt || 0 : b.nameAt,
       notes: notesLocal ? a.notes || '' : b.notes || '', notesAt: notesLocal ? a.notesAt || 0 : b.notesAt,
-      tasks: [...map.values()], deleted: del
+      tasks: [...map.values()], deleted: del,
+      customSubjects: { ...((b && b.customSubjects) || {}), ...(a.customSubjects || {}) },
+      intel: {
+        dismissed: mergeMap(a.intel && a.intel.dismissed, b && b.intel && b.intel.dismissed),
+        accepted:  mergeMap(a.intel && a.intel.accepted,  b && b.intel && b.intel.accepted),
+        snoozed:   mergeMap(a.intel && a.intel.snoozed,   b && b.intel && b.intel.snoozed),
+        courseMap: { ...((b && b.intel && b.intel.courseMap) || {}), ...((a.intel && a.intel.courseMap) || {}) }
+      }
     };
   }
+  const mergeMap = (x = {}, y = {}) => {
+    const o = { ...y };
+    for (const [k, v] of Object.entries(x)) o[k] = Math.max(o[k] || 0, v);
+    const cut = Date.now() - 90 * 864e5;            // limpia entradas de más de 90 días
+    for (const k of Object.keys(o)) if (o[k] < cut) delete o[k];
+    return o;
+  };
 
   /* ============ Google Identity y token ============ */
   let tokenClient = null, tok = null, tokExp = 0, pend = null, refT, armed = false;

@@ -444,3 +444,51 @@ body.nio-open .toasts{bottom:200px}
 #syncMenu .stat{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.08);font-size:14px;color:var(--muted);line-height:1.4}
 #syncMenu .stat i{margin-top:2px}
 #syncMenu .btn{justify-content:center;width:100%;padding:12px 16px;font-size:15px}
+
+
+/* ===== Hero inteligente ===== */
+.hero{grid-column:span 12;display:flex;align-items:center;gap:26px;position:relative;overflow:hidden;
+  --a:#8ab4ff;--b:#b38cff}
+.hero::before{content:"";position:absolute;inset:-40%;z-index:-1;opacity:.35;
+  background:radial-gradient(40% 40% at 20% 30%,var(--a),transparent 70%),radial-gradient(40% 40% at 80% 70%,var(--b),transparent 70%);
+  animation:heroDrift 14s ease-in-out infinite alternate;transition:opacity 1s}
+@keyframes heroDrift{to{transform:translate(4%,3%) rotate(8deg) scale(1.08)}}
+.hero[data-mood="calm"]{--a:#8ab4ff;--b:#b38cff}
+.hero[data-mood="busy"]{--a:#ffcf70;--b:#ff9f80}
+.hero[data-mood="urgent"]{--a:#ff8c9a;--b:#ff7f50}
+.hero[data-mood="celebrate"]{--a:#7ee0a8;--b:#7fd1ff}
+.hero-orb{position:relative;flex:0 0 78px;height:78px}
+.hero-orb span{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 30% 30%,#fff,var(--a) 45%,var(--b));
+  opacity:.9;animation:orb 4s ease-in-out infinite}
+.hero-orb span:nth-child(2){animation-delay:-1.3s;opacity:.45;filter:blur(8px)}
+.hero-orb span:nth-child(3){animation-delay:-2.6s;opacity:.3;filter:blur(18px)}
+@keyframes orb{50%{transform:scale(1.14)}}
+.hero-kicker{font-size:14px;text-transform:capitalize;color:var(--muted);margin-bottom:4px}
+.hero h2{font-size:clamp(22px,3.2vw,34px);font-weight:600;letter-spacing:-.01em;line-height:1.15}
+.hero p{font-size:clamp(16px,2vw,19px);font-weight:300;margin-top:6px;min-height:1.4em;color:rgba(255,255,255,.9)}
+.hero-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;font-size:14px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2)}
+
+/* ===== Sugerencias ===== */
+.suggest{grid-column:span 12}
+.badge{min-width:22px;padding:1px 8px;border-radius:999px;background:#fff;color:#1b2038;font-size:13px;font-weight:600;text-align:center}
+.badge:empty{display:none}
+.sg-status{font-size:14px;margin:-4px 0 12px}
+.task.sg{grid-template-columns:auto 1fr auto;cursor:default}
+.sg-ic{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:color-mix(in srgb,var(--c) 28%,transparent);color:var(--c)}
+.sg-score{opacity:.7}
+.sg-why{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}
+.sg-why em{font-style:normal;font-size:12.5px;padding:3px 9px;border-radius:999px;background:rgba(255,255,255,.1);color:var(--muted)}
+.sg-actions{display:flex;gap:6px}
+.sg-actions button{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,.12);transition:transform .25s var(--ease),background .2s}
+.sg-actions button:hover{background:rgba(255,255,255,.26)}
+.sg-actions button:active{transform:scale(.9)}
+.sg-actions button[data-act="add"],.sg-actions button[data-act="do"]{background:#fff;color:#1b2038}
+#sgRefresh.spin i{animation:syncspin 1s linear infinite}
+#sgConnect{margin-top:8px}
+@media (max-width:620px){
+  .hero{flex-direction:column;align-items:flex-start;gap:14px}
+  .task.sg{grid-template-columns:auto 1fr}
+  .sg-actions{grid-column:1/-1;justify-content:flex-end}
+}
+@media (prefers-reduced-motion:reduce){.hero::before,.hero-orb span{animation:none}}
