@@ -40,7 +40,7 @@
 
   /* ============ Mezcla (gana lo más reciente) ============ */
   const canon = s => JSON.stringify({ n: s.name, a: s.nameAt || 0, o: s.notes || '', b: s.notesAt || 0,
-    d: s.deleted || {}, i: s.intel || {}, c: s.customSubjects || {},
+    d: s.deleted || {}, i: s.intel || {}, u: s.subjects || {}, r: s.renames || {}, ua: s.subjectsAt || 0,
     t: [...s.tasks].sort((x, y) => x.id < y.id ? -1 : 1) },
     (k, v) => v && typeof v === 'object' && !Array.isArray(v) ? Object.fromEntries(Object.entries(v).sort(([a], [b]) => a < b ? -1 : 1)) : v);
   function merge(a, b) {
@@ -56,12 +56,16 @@
     for (const id of Object.keys(del)) if (del[id] < old) delete del[id];
     const useLocal = !b || (a.nameAt || 0) >= (b.nameAt || 0);
     const notesLocal = !b || (a.notesAt || 0) >= (b.notesAt || 0);
+    const subjLocal = !b || !b.subjects || (a.subjectsAt || 0) >= (b.subjectsAt || 0);
     return {
       version: 2,
       name: useLocal ? a.name : b.name, nameAt: useLocal ? a.nameAt || 0 : b.nameAt,
       notes: notesLocal ? a.notes || '' : b.notes || '', notesAt: notesLocal ? a.notesAt || 0 : b.notesAt,
       tasks: [...map.values()], deleted: del,
-      customSubjects: { ...((b && b.customSubjects) || {}), ...(a.customSubjects || {}) },
+      /*customSubjects: { ...((b && b.customSubjects) || {}), ...(a.customSubjects || {}) },*/
+      subjects:   subjLocal ? a.subjects : b.subjects,
+      renames:    subjLocal ? (a.renames || {}) : (b.renames || {}),
+      subjectsAt: subjLocal ? (a.subjectsAt || 0) : (b.subjectsAt || 0),
       intel: {
         dismissed: mergeMap(a.intel && a.intel.dismissed, b && b.intel && b.intel.dismissed),
         accepted:  mergeMap(a.intel && a.intel.accepted,  b && b.intel && b.intel.accepted),

@@ -34,7 +34,7 @@
     else if (s.kind === 'complete')    buttons = act('do', 'fi-rr-check', 'Marcar hecha') + act('dismiss', 'fi-rr-cross-small', 'Ignorar');
     else if (s.kind === 'reschedule')  buttons = act('do', 'fi-rr-calendar', 'Actualizar fecha') + act('dismiss', 'fi-rr-cross-small', 'Ignorar');
     else if (s.kind === 'stale')       buttons = act('do', 'fi-rr-check', 'Marcar hecha') + act('remove', 'fi-rr-trash', 'Eliminar') + act('snooze', 'fi-rr-clock', 'Después');
-    else if (s.kind === 'new_subject') buttons = act('do', 'fi-rr-plus', 'Agregar materia') + act('dismiss', 'fi-rr-cross-small', 'Ignorar');
+    else if (s.kind === 'new_subject') buttons = act('do', 'fi-rr-plus', 'Crear como materia nueva') + act('map', 'fi-rr-link', 'Vincular a una materia que ya tengo') + act('dismiss', 'fi-rr-cross-small', 'Ignorar');
     else                               buttons = act('dismiss', 'fi-rr-check', 'Enterado');
     const when = s.date ? `<span><i class="fi fi-rr-calendar"></i>${esc(DashApp.fmtDate(s.date))}${s.time ? ', ' + esc(DashApp.fmtTime(s.time)) : ''}</span>` : '';
     return `<div class="task sg" data-sg="${esc(s.id)}" style="--c:${s.color};--n:${i}">
@@ -86,6 +86,9 @@
       if (s.kind === 'new_subject') { DashApp.addSubject(s.draft.name, s.draft.color);
         const it = I.store.intel(); it.courseMap[s.draft.courseId] = s.draft.name; I.store.commit(); DashApp.toast('fi-rr-check', 'Materia agregada'); }
       mark('accepted', s.id, Date.now());
+    } else if (act === 'map') {
+      I.settings.open('courses', s.draft.courseId);     // abre el panel y resalta esa clase
+      return;
     }
     I.recompute();
   });

@@ -126,7 +126,9 @@
       if (C.subject(c, intel)) continue;
       const used = Object.values(DashApp.SUBJECTS);
       const color = cfg.PALETTE.find(p => !used.includes(p)) || '#8ab4ff';
-      push({ id: `subj:${c.id}`, kind: 'new_subject', title: `Nueva materia: ${c.name}`, score: 70, why: ['No coincide con ninguna de tus materias'],
+      push({ id: `subj:${c.id}`, kind: 'new_subject', title: `Nueva materia: ${c.name}`,
+        subtitle: (c.teachers || []).length ? 'Profe: ' + c.teachers.join(', ') : (c.section || ''),
+        score: 70, why: ['No coincide con ninguna de tus materias'],
         draft: { name: c.name.slice(0, 30), color, courseId: c.id }, subject: null });
     }
 

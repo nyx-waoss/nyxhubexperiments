@@ -36,6 +36,7 @@
 			<p id="sub" class="muted"></p>
 		</div>
 		<div class="create">
+		<button class="btn secondary" id="subjectsBtn" title="Materias"><i class="fi fi-rr-settings"></i></button>
 			<button class="btn secondary" id="invokeNioBtn"><i class="fi fi-rr-circle-microphone"></i></button>
 			<button class="btn primary" id="add"><i class="fi fi-rr-plus"></i><span>Nueva tarea</span></button>
 		</div>
@@ -43,7 +44,12 @@
 
 	<section class="grid">
 		<article class="card hero" id="hero" data-mood="calm" style="--i:0">
-			<div class="hero-orb"><span></span><span></span><span></span></div>
+			<div class="hero-orb" id="invokeNioOrbBtn">
+				<span></span><span></span><span></span>
+				<div class="face">
+					<div class="eyes"><div class="eye l"></div><div class="eye r"></div></div><div class="mouth"></div>
+				</div>
+			</div>
 			<div class="hero-body">
 				<div class="hero-kicker" id="heroKicker"></div>
 				<h2 id="heroTitle"></h2>
@@ -136,6 +142,7 @@
 			<div class="card-title">
 				<i class="fi fi-rr-bulb"></i>Sugerencias <span class="badge" id="sgCount"></span>
 				<div class="seg">
+				<button id="sgMap" title="Vincular clases con materias"><i class="fi fi-rr-link"></i></button>
 				<button id="sgRefresh" title="Revisar ahora"><i class="fi fi-rr-refresh"></i></button>
 				</div>
 			</div>
@@ -164,6 +171,8 @@
 <script src="intel/greeter.js"></script>
 <script src="intel/mock.js"></script>
 <script src="intel/ui.js"></script>
+<script src="intel/settings.js"></script>
+
 <script src="intel/intel.js"></script>
 <!--<script src="https://cdn.jsdelivr.net/npm/eruda"></script>
 <script>eruda.init();</script>-->

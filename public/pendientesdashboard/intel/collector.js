@@ -23,21 +23,29 @@
 
   async function collectClassroom() {
     const courses = await G.paged(`${CL}/courses?studentId=me&courseStates=ACTIVE&pageSize=50`, 'courses', 2);
-    const out = { courses: courses.map(c => ({ id: c.id, name: c.name, section: c.section || '', room: c.room || '', link: c.alternateLink })),
-      work: [], subs: [], announcements: [], materials: [] };
+        const out = { courses: courses.map(c => ({ id: c.id, name: c.name, section: c.section || '', room: c.room || '', link: c.alternateLink, teachers: [] })),
+      work: [], subs: [], announcements: [], materials: [], teachersStatus: 'none' };
+    let tOk = 0, tDenied = 0;
 
     await pool(courses, 3, async c => {
-      const [work, subs, ann, mats] = await Promise.all([
+      const [work, subs, ann, mats, teachers] = await Promise.all([
         G.paged(`${CL}/courses/${c.id}/courseWork?courseWorkStates=PUBLISHED&orderBy=dueDate%20desc&pageSize=50`, 'courseWork', 3),
         G.paged(`${CL}/courses/${c.id}/courseWork/-/studentSubmissions?userId=me&pageSize=100`, 'studentSubmissions', 3),
         G.paged(`${CL}/courses/${c.id}/announcements?announcementStates=PUBLISHED&orderBy=updateTime%20desc&pageSize=20`, 'announcements', 1),
-        G.paged(`${CL}/courses/${c.id}/courseWorkMaterials?courseWorkMaterialStates=PUBLISHED&pageSize=20`, 'courseWorkMaterial', 1).catch(() => [])
+        G.paged(`${CL}/courses/${c.id}/courseWorkMaterials?courseWorkMaterialStates=PUBLISHED&pageSize=20`, 'courseWorkMaterial', 1).catch(() => []),
+        // NUEVO: profes de la clase. Si falla (scope sin aceptar) no tumba el resto.
+        G.paged(`${CL}/courses/${c.id}/teachers?pageSize=10`, 'teachers', 1)
+          .then(r => { tOk++; return r; })
+          .catch(e => { if (e.status === 403) tDenied++; return []; })
       ]);
       out.work.push(...work.map(slimWork));
       out.subs.push(...subs.map(slimSub));
       out.announcements.push(...ann.map(slimAnn));
       out.materials.push(...mats.map(slimMat));
+      const names = teachers.map(t => (t.profile && t.profile.name && t.profile.name.fullName) || '').filter(Boolean);
+      out.courses.find(x => x.id === c.id).teachers = names;
     });
+    out.teachersStatus = tOk ? 'ok' : tDenied ? 'denied' : 'none';
     return out;
   }
 

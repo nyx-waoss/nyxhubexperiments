@@ -7,6 +7,7 @@
       'https://www.googleapis.com/auth/classroom.coursework.me.readonly',
       'https://www.googleapis.com/auth/classroom.announcements.readonly',
       'https://www.googleapis.com/auth/classroom.courseworkmaterials.readonly',
+      'https://www.googleapis.com/auth/classroom.profile.emails',
       'https://www.googleapis.com/auth/calendar.readonly'
     ].join(' '),
 

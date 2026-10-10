@@ -31,10 +31,15 @@
     // devuelve el nombre de materia de TU app, o null si no se reconoce (→ "materia nueva")
     subject(course, intel) {
       if (!course) return null;
+      const S = DashApp.SUBJECTS, ren = DashApp.getState().renames || {};
       const mapped = intel && intel.courseMap && intel.courseMap[course.id];
-      if (mapped) return mapped;
+      if (mapped && S[mapped]) return mapped;                      // vínculo manual (tiene prioridad)
       const name = T.norm(course.name + ' ' + (course.section || ''));
-      for (const [subj, re] of I.config.SUBJECT_KEYWORDS) if (re.test(name)) return subj;
+      for (const [subj, re] of I.config.SUBJECT_KEYWORDS) {
+        if (!re.test(name)) continue;
+        const cur = ren[subj] || subj;                             // si la renombraste, usa el nombre actual
+        return S[cur] ? cur : null;                                // si la eliminaste, vuelve a "sin reconocer"
+      }
       return null;
     }
   };

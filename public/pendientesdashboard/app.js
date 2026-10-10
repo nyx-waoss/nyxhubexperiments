@@ -31,6 +31,7 @@
     'Media': 'var(--warn)',
     'Baja': 'var(--ok)'
   };
+  const DEFAULT_SUBJECTS = { ...SUBJECTS };
 
   /* Estado */
   const pad = n => String(n).padStart(2, '0');
@@ -52,8 +53,7 @@
   if (!state.deleted) state.deleted = {};
   if (typeof state.notes !== 'string') state.notes = '';
   if (!state.intel) state.intel = { dismissed: {}, accepted: {}, snoozed: {}, courseMap: {} };
-  if (!state.customSubjects) state.customSubjects = {};
-  Object.assign(SUBJECTS, state.customSubjects);
+  applySubjects();
   const save = () => {
     try { window.DashSync && DashSync.stamp(state); } catch (e) {}
     try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
@@ -65,6 +65,58 @@
   let sfilter = 'today';
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const color = s => SUBJECTS[s] || '#8ab4ff';
+    /* ===== Materias editables ===== */
+  function applySubjects() {
+    if (!state.subjects) state.subjects = { ...DEFAULT_SUBJECTS, ...(state.customSubjects || {}) };   // migración
+    delete state.customSubjects;
+    if (!state.renames) state.renames = {};
+    Object.keys(SUBJECTS).forEach(k => delete SUBJECTS[k]);
+    Object.assign(SUBJECTS, state.subjects);
+  }
+  const colorOf = orig => SUBJECTS[(state.renames && state.renames[orig]) || orig] || '#8ab4ff';
+  const commitSubjects = () => { state.subjects = { ...SUBJECTS }; state.subjectsAt = Date.now(); save(); render(); };
+
+  function setSubjectColor(name, c, commit = true) {
+    if (!SUBJECTS[name]) return;
+    SUBJECTS[name] = c;
+    commit ? commitSubjects() : render();        // commit=false mientras arrastras el selector de color
+  }
+  function renameSubject(oldN, newN) {
+    newN = String(newN || '').trim().slice(0, 30);
+    if (oldN === 'Otro') return 'La materia "Otro" no se puede renombrar';
+    if (!newN) return 'El nombre no puede estar vacío';
+    if (newN === oldN) return true;
+    if (SUBJECTS[newN]) return 'Ya existe una materia con ese nombre';
+    const entries = Object.entries(SUBJECTS).map(([k, v]) => [k === oldN ? newN : k, v]);   // conserva el orden
+    Object.keys(SUBJECTS).forEach(k => delete SUBJECTS[k]);
+    entries.forEach(([k, v]) => { SUBJECTS[k] = v; });
+    state.tasks.forEach(t => { if (t.subject === oldN) t.subject = newN; });
+    let chained = false;
+    for (const o of Object.keys(state.renames)) if (state.renames[o] === oldN) { state.renames[o] = newN; chained = true; }
+    if (!chained) state.renames[oldN] = newN;
+    const cm = (state.intel && state.intel.courseMap) || {};
+    for (const k of Object.keys(cm)) if (cm[k] === oldN) cm[k] = newN;
+    commitSubjects();
+    return true;
+  }
+  function addSubject(name, c) {
+    name = String(name || '').trim().slice(0, 30);
+    if (!name || SUBJECTS[name]) return false;
+    SUBJECTS[name] = c;
+    delete state.renames[name];
+    commitSubjects();
+    return true;
+  }
+  function removeSubject(name) {
+    if (name === 'Otro' || !SUBJECTS[name]) return false;
+    delete SUBJECTS[name];
+    state.tasks.forEach(t => { if (t.subject === name) t.subject = 'Otro'; });
+    const cm = (state.intel && state.intel.courseMap) || {};
+    for (const k of Object.keys(cm)) if (cm[k] === name) cm[k] = '';
+    for (const o of Object.keys(state.renames)) if (state.renames[o] === name) delete state.renames[o];
+    commitSubjects();
+    return true;
+  }
 
   /* Fechas */
   const cmp = (a, b) => (a.date + (a.time || '99:99')).localeCompare(b.date + (b.time || '99:99'));
@@ -453,17 +505,11 @@
     render();
   }, 30000);
 
-    /* Verificar materiales (temporal: solo en memoria, no se guarda ni se sincroniza) */
   const MATERIALS = {
-    dg: { title: 'Diseño Gráfico', color: SUBJECTS['Graphic Design'], items: 
-      ['Paleta de colores', 'Pinceles', 'Témperas',
-        'Brochas', 'Hojas', 'Caja de arte', 'Gabacha',
-      ] },
-    dme: { title: 'DME', color: SUBJECTS['DME'], items: 
-      ['Antología', 'Caja de arte', 'Reglas',
-        'Escuadras', 'Compás', 'Trapito', 'Alcohol',
-        'Escalimetro', 'Gabacha', 
-      ] },
+    dg: { title: 'Diseño Gráfico', get color() { return colorOf('Graphic Design'); }, items:
+      ['Paleta de colores', 'Pinceles', 'Témperas', 'Brochas', 'Hojas', 'Caja de arte', 'Gabacha'] },
+    dme: { title: 'DME', get color() { return colorOf('DME'); }, items:
+      ['Antología', 'Caja de arte', 'Reglas', 'Escuadras', 'Compás', 'Trapito', 'Alcohol', 'Escalimetro', 'Gabacha'] },
   };
   const matDone = { dg: new Set(), dme: new Set() };
 
@@ -506,6 +552,9 @@
     SUBJECTS, TYPES,
     plus, pad, dstr, cmp, fmtDate, fmtTime,
     openNewTask,
+    openPanel, closePanel, render,
+    colorOf,
+    setSubjectColor, renameSubject, addSubject, removeSubject,
     updateTask(id, patch) {
       const t = state.tasks.find(x => x.id === id);
       if (t) { Object.assign(t, patch); save(); render(); }
@@ -518,8 +567,7 @@
     setState(s) {
       state = s;
       if (!state.intel) state.intel = { dismissed: {}, accepted: {}, snoozed: {}, courseMap: {} };
-      if (!state.customSubjects) state.customSubjects = {};
-      Object.assign(SUBJECTS, state.customSubjects);
+      applySubjects();
       try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
       nameEl.textContent = state.name;
       if (document.activeElement !== notesEl) notesEl.value = state.notes || '';

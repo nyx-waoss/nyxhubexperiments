@@ -281,8 +281,8 @@
 
   /* ================= Voz e interfaz ================= */
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  const box = $('#nioContainer'), btn = $('#invokeNioBtn'), uiIn = $('.userInput'), uiOut = $('.nioResponse');
-  if (!box || !btn) return;
+  const box = $('#nioContainer'), btn = $('#invokeNioBtn'), btnorb = $('#invokeNioOrbBtn'), uiIn = $('.userInput'), uiOut = $('.nioResponse');
+  if (!box || !btn || !btnorb) return;
   const sound = new Audio(SOUND_URL);
   const errSound = new Audio(ERR_SOUND_URL);
   const wave = document.createElement('span');
@@ -419,5 +419,6 @@
     startSession();
   }
   btn.addEventListener('click', invoke);
+  btnorb.addEventListener('click', invoke);
   if ('speechSynthesis' in window) speechSynthesis.getVoices();
 })();
