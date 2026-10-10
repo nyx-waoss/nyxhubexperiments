@@ -56,15 +56,15 @@
   rule('progress', 60, c => c.pct >= 50 && c.pct < 100, 'calm',
     c => [`Vas por el ${c.pct}% del día. ${plural(c.left, 'Solo falta', 'Solo faltan')} ${c.left}.`]);
   rule('sun-night', 65, c => c.dow === 0 && c.h >= 17, 'calm',
-    c => [c.mondayN ? `Mañana empieza la semana y ya tienes ${c.mondayN} ${plural(c.mondayN, 'cosa', 'cosas')} para el lunes. Deja todo listo hoy.` : 'Mañana empieza la semana. Deja tus materiales listos.']);
+    c => [c.mondayN ? `Mañana empieza la semana y ya tienes ${c.mondayN} ${plural(c.mondayN, 'cosa', 'cosas')} para el lunes. Deja todo listo hoy :D` : 'Mañana empieza la semana. Deja tus materiales listos :D']);
   rule('weekend', 50, c => (c.dow === 6 || c.dow === 0) && c.weekAhead > 0, 'calm',
-    c => [`Fin de semana: buen momento para adelantar. Tienes ${c.weekAhead} cosas en los próximos 7 días.`]);
+    c => [`Fin de semana, buen momento para adelantar. Tienes ${c.weekAhead} cosas en los próximos 7 días.`]);
   rule('friday', 48, c => c.dow === 5 && c.slot === 'tarde', 'calm',
-    c => ['Ya casi es fin de semana. Revisa qué queda pendiente antes de desconectarte.']);
+    c => ['Ya casi es fin de semana. Revisa qué queda pendiente antes de desconectarte jsjs']);
   rule('monday', 52, c => c.dow === 1 && c.slot === 'manana', 'busy',
     c => [`Lunes, nueva semana. Esta semana llevas ${c.weekAhead} ${plural(c.weekAhead, 'cosa', 'cosas')} por delante.`]);
   rule('notes', 55, c => c.noteHit, 'calm',
-    c => [`Tus notas mencionan "${c.noteHit}". ¿Lo conviertes en una tarea?`]);
+    c => [`Tus notas mencionan "${c.noteHit}". Lo conviertes en una tarea?`]);
   rule('rain', 30, c => /lluvia|tormenta/.test(c.weather) && c.left > 0, 'calm',
     c => [`Está lloviendo, buen plan para quedarse adelantando pendientes (${c.left} hoy).`]);
   rule('free', 40, c => c.todayN === 0 && c.total === 0, 'calm',
@@ -79,8 +79,8 @@
     if (c.away === null) return `Bienvenido, ${n}`;
     if (c.away > 6) return `Bienvenido de vuelta, ${n}. ¡Es un gusto tenerte de nuevo!`;
     return pick({
-      madrugada: [`Todavía despierto, ${n}?`, `Es de madrugada, ${n}. No te desveles de más.`],
-      manana:    [`Buenos días, ${n}`, `¡Arriba, ${n}!`],
+      madrugada: [`Todavía despierto, ${n}?`, `Es de madrugada, ${n}. No te desveles de más, mira que tienes que despertar temprano...`],
+      manana:    [`Buenos días, ${n}`, `A empezar el día, ${n}!`],
       mediodia:  [`Hola de nuevo, ${n}`, `Buen mediodía, ${n}`],
       tarde:     [`Buenas tardes, ${n}`, `Qué tal la tarde, ${n}`],
       noche:     [`Buenas noches, ${n}`, `Último empujón del día, ${n}`]

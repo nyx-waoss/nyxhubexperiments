@@ -71,7 +71,8 @@
           isHoliday: /holiday|festivo|feriado/i.test(c.id) });
       }
     });
-    return { calendars: sel.map(c => ({ id: c.id, name: c.summary })), events };
+    return { calendars: sel.map(c => ({ id: c.id, name: c.summary })), events,
+      account: (cals.find(c => c.primary) || {}).id || '' };
   }
 
   const explain = e => e.status === 403 ? 'Permiso denegado (¿API no habilitada o scope sin aceptar?)'
@@ -83,6 +84,9 @@
       const res = { at: Date.now(), classroom: prev.classroom || null, calendar: prev.calendar || null, errors: {} };
       try { res.classroom = await collectClassroom(); } catch (e) { res.errors.classroom = explain(e); console.warn('Classroom', e); }
       try { res.calendar = await collectCalendar(); } catch (e) { res.errors.calendar = explain(e); console.warn('Calendar', e); }
+      if (res.calendar && res.calendar.account) {
+        try { localStorage.setItem('dash-intel-account', res.calendar.account); } catch (e) {}
+      }
       I.store.saveCache(res);
       return res;
     }

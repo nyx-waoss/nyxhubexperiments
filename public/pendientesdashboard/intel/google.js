@@ -68,6 +68,7 @@
 
   const G = I.google = {
     isConnected: () => localStorage.getItem(FLAG) === '1',
+    account: () => localStorage.getItem('dash-intel-account') || '',
     async connect() {                         // llamar SOLO desde un click del usuario
       await init();
       const r = await request('consent');
@@ -80,9 +81,10 @@
       await request('');                      // refresco silencioso (puede pedir click si el navegador bloquea el popup)
       return token;
     },
-    disconnect() {                            // NO usamos revoke(): revocaría también el acceso a Drive del sync
+    disconnect() {
       token = null; exp = 0;
       localStorage.removeItem(FLAG);
+      localStorage.removeItem('dash-intel-account');
       I.store.clearCache();
     },
     api, paged

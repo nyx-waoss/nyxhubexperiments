@@ -213,6 +213,8 @@
   nio ? nio.parentNode.insertBefore(btn, nio) : document.querySelector('.top').appendChild(btn);
   const menu = document.createElement('div');
   menu.id = 'syncMenu'; document.body.appendChild(menu);
+  let dropOpen = false;
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
   const ICON = { idle: 'fi-rr-check', ok: 'fi-rr-check', syncing: 'fi-rr-refresh', error: 'fi-rr-exclamation', reconnect: 'fi-rr-exclamation', offline: 'fi-rr-cloud' };
   const TEXT = { idle: 'Listo para sincronizar', ok: 'Todo sincronizado', syncing: 'Sincronizando...', error: 'No se pudo sincronizar', reconnect: 'Toca para reconectar con Google', offline: 'Sin conexión, se sincronizará después' };
@@ -229,7 +231,7 @@
     const m = Math.round((Date.now() - ts) / 60000);
     return m < 1 ? 'hace un momento' : m < 60 ? `hace ${m} min` : new Date(ts).toLocaleTimeString('es-CR', { hour: 'numeric', minute: '2-digit' });
   };
-  function renderMenu() {
+    function renderMenu() {
     menu.innerHTML = '';
     const mk = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt) e.textContent = txt; return e; };
     const who = mk('div', 'who');
@@ -239,9 +241,33 @@
     const st = mk('div', 'stat'); st.append(mk('i', 'fi ' + ICON[status]), mk('span', '', `${TEXT[status]}. Última vez: ${ago(ls.get(K.last))}`));
     const now = mk('button', 'btn ghost'); now.innerHTML = '<i class="fi fi-rr-refresh"></i><span>Sincronizar ahora</span>';
     now.onclick = () => { closeMenu(); haveToken() ? sync() : trySilent(); };
-    const out = mk('button', 'btn danger'); out.innerHTML = '<i class="fi fi-rr-sign-out-alt"></i><span>Cerrar sesión</span>';
-    out.onclick = signOut;
-    menu.append(who, st, now, out);
+
+    /* --- Cerrar sesión con selector --- */
+    const intel = window.Intel, intelOn = !!(intel && intel.google && intel.google.isConnected());
+    const intelAcct = intelOn ? (intel.google.account() || 'Cuenta conectada') : 'No conectado';
+
+    const out = mk('button', 'btn danger');
+    out.innerHTML = '<i class="fi fi-rr-sign-out-alt"></i><span>Cerrar sesión</span><i class="fi fi-rr-angle-small-down chev2"></i>';
+    out.setAttribute('aria-expanded', String(dropOpen));
+    out.onclick = e => { e.stopPropagation(); dropOpen = !dropOpen; renderMenu(); };   // stopPropagation: evita que el click "fuera" cierre el menú
+
+    const opt = (icon, title, sub, fn, disabled) => {
+      const b = mk('button', 'sopt'); b.disabled = !!disabled;
+      b.innerHTML = `<i class="fi ${icon}"></i><span><b>${esc(title)}</b><small>${esc(sub)}</small></span>`;
+      b.onclick = fn; return b;
+    };
+    const inner = mk('div');
+    inner.append(
+      opt('fi-rr-cloud', 'Sincronización', profile.email, () => signOut()),
+      opt('fi-rr-graduation-cap', 'Classroom y Calendar', intelAcct, () => {
+        intel.disconnect(); closeMenu();
+        app.toast('fi-rr-sign-out-alt', 'Classroom y Calendar desconectados');
+      }, !intelOn)
+    );
+    if (intelOn) inner.append(opt('fi-rr-sign-out-alt', 'Cerrar ambas', 'Sincronización + Classroom y Calendar', () => { intel.disconnect(); signOut(); }));
+    const drop = mk('div', 'sdrop' + (dropOpen ? ' open' : '')); drop.append(inner);
+
+    menu.append(who, st, now, out, drop);
   }
   function openMenu() {
     renderMenu();
@@ -249,7 +275,7 @@
     menu.style.top = r.bottom + 10 + 'px'; menu.style.right = Math.max(12, innerWidth - r.right) + 'px';
     menu.classList.add('open');
   }
-  const closeMenu = () => menu.classList.remove('open');
+  const closeMenu = () => { dropOpen = false; menu.classList.remove('open'); };
   btn.addEventListener('click', e => {
     e.stopPropagation();
     if (!profile) return signIn();

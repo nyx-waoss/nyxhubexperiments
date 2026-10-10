@@ -14,6 +14,11 @@
     I.ui.renderHero(false);
   };
 
+  I.disconnect = () => {
+    I.google.disconnect();
+    I.state.suggestions = []; I.state.lastScan = 0; I.state.error = null;
+    I.recompute();
+  };
   I.scan = async () => {
     if (I.state.scanning) return;
     if (I.mockOn) { I.state.lastScan = Date.now(); I.recompute(); return; }

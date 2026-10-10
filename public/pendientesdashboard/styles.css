@@ -557,3 +557,15 @@ body.nio-open .toasts{bottom:200px}
 .st-chip.auto,.st-chip.none{--c:#fff;opacity:.75}
 .st-course.pulse{animation:stPulse 1.2s ease 2}
 @keyframes stPulse{50%{box-shadow:0 0 0 5px rgba(255,255,255,.3)}}
+
+#syncMenu .chev2{transition:transform .3s var(--ease)}
+#syncMenu .btn.danger[aria-expanded="true"] .chev2{transform:rotate(180deg)}
+#syncMenu .sdrop{display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s var(--ease)}
+#syncMenu .sdrop.open{grid-template-rows:1fr}
+#syncMenu .sdrop>div{overflow:hidden;display:flex;flex-direction:column;gap:8px}
+#syncMenu .sopt{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:11px 14px;border-radius:14px;
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);transition:background .2s}
+#syncMenu .sopt:hover{background:rgba(255,255,255,.16)}
+#syncMenu .sopt:disabled{opacity:.45;cursor:default}
+#syncMenu .sopt b{display:block;font-weight:500;font-size:15px}
+#syncMenu .sopt small{display:block;color:var(--muted);font-size:13px;word-break:break-all}

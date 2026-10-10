@@ -51,14 +51,15 @@
   function renderSuggestions() {
     const S = I.state, list = $('#sgList'), conn = I.google.isConnected() || I.mockOn;
     $('#sgConnect').style.display = conn ? 'none' : '';
+    $('#sgDisconnect').style.display = conn && !I.mockOn ? '' : 'none';
     $('#sgCount').textContent = S.suggestions.length ? S.suggestions.length : '';
     $('#sgRefresh').classList.toggle('spin', S.scanning);
-    $('#sgStatus').textContent = !conn ? 'Conecta tu cuenta para que revise Classroom y Calendar por ti.'
-      : S.scanning ? 'Revisando Classroom y Calendar…'
+    $('#sgStatus').textContent = !conn ? 'Conecta tu cuenta para obtener auto-sugerencias de Classroom y Calendar por ti de forma inteligente.'
+      : S.scanning ? 'Obteniendo datos de Classroom y Calendar…'
       : S.error ? S.error
       : `Última revisión ${ago(S.lastScan)}${I.mockOn ? ' (datos de prueba)' : ''}`;
     list.innerHTML = S.suggestions.length ? S.suggestions.map(sgHTML).join('')
-      : `<div class="empty"><i class="fi fi-rr-sparkles"></i><span>${conn ? 'Todo al día. No hay nada nuevo que sugerir.' : 'Sin conexión todavía.'}</span></div>`;
+      : `<div class="empty"><i class="fi fi-rr-sparkles"></i><span>${conn ? 'Todo al día! No hay nada nuevo que sugerir.' : 'Sin conexión todavía.'}</span></div>`;
   }
 
   /* ===== Acciones ===== */
@@ -99,5 +100,6 @@
     catch (e) { DashApp.toast('fi-rr-exclamation', 'No se pudo conectar'); console.warn(e); }
   });
 
+  $('#sgDisconnect').addEventListener('click', () => { I.disconnect(); DashApp.toast('fi-rr-sign-out-alt', 'Classroom y Calendar desconectados'); });
   I.ui = { renderHero, renderSuggestions };
 })();
